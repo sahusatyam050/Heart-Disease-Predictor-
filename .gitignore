@@ -1,0 +1,38 @@
+# Virtual Environment
+venv/
+env/
+ENV/
+
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Data Files - Keep the dataset, exclude large exports
+# Note: heart_disease.csv is needed for Streamlit Cloud deployment
+data/*.xlsx
+data/*.json
+data/exports/
+
+# Models - Exclude by default (model will be trained on deployment)
+# To include model in repository, comment out the line below
+models/*.pkl
+models/*.h5
+models/*.joblib
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
