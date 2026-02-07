@@ -427,11 +427,36 @@ def main():
     with col_header2:
         st.markdown('<p class="sub-header" style="text-align: left; margin-top: 1.5rem;">AI-Powered Risk Assessment</p>', unsafe_allow_html=True)
     
-    # Check if model exists
+    # Check if model exists, if not train it automatically
     if not os.path.exists('models/heart_model.pkl'):
-        st.error("❌ **Model not found!**")
-        st.info("Please train the model first by running: `python train_model.py`")
-        st.stop()
+        st.warning("⚠️ **Model not found! Training model automatically...**")
+        st.info("This will take about 30-60 seconds on first deployment. Please wait...")
+        
+        with st.spinner("🤖 Training machine learning model..."):
+            try:
+                # Import training function
+                import subprocess
+                import sys
+                
+                # Run the training script
+                result = subprocess.run([sys.executable, 'train_model.py'], 
+                                      capture_output=True, 
+                                      text=True,
+                                      cwd=os.getcwd())
+                
+                if result.returncode == 0:
+                    st.success("✅ **Model trained successfully!** The app is now ready to use.")
+                    st.info("🔄 Please refresh the page to start using the predictor.")
+                    st.balloons()
+                    st.stop()
+                else:
+                    st.error(f"❌ Model training failed. Error: {result.stderr}")
+                    st.code(result.stderr)
+                    st.stop()
+            except Exception as e:
+                st.error(f"❌ Error training model: {str(e)}")
+                st.info("Please contact the administrator or check the GitHub repository.")
+                st.stop()
     
     # Load models
     with st.spinner("🔄 Loading AI model..."):
